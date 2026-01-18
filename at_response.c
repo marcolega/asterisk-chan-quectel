@@ -848,7 +848,7 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 		return 0;
 	}
 
-	struct cpvt * cpvt = pvt->last_dialed_cpvt;
+	cpvt = pvt->last_dialed_cpvt;
 	pvt->last_dialed_cpvt = NULL;
 	if(!cpvt)
 	{
