@@ -765,14 +765,13 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 {
 	int call_index;
 	int call_type;
-	struct cpvt * cpvt;
-	call_state_t oldstate = cpvt->state;
+	
 
-	ast_log (LOG_ERROR, "[%s] at_response_orig state:%s\n", PVT_ID(pvt), call_state2str(oldstate));
+	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
 
         if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
         {
-	//struct cpvt * cpvt;
+	struct cpvt * cpvt;
 
 	request_clcc(pvt);
 
@@ -813,6 +812,8 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int duration   = 0;
 	int end_status = 0;
 	int cc_cause   = 0;
+	struct cpvt * cpvt;
+	call_state_t oldstate = cpvt->state;
 	
 	if (oldstate == CALL_STATE_DIALING) cc_cause = 17;
 
@@ -848,7 +849,7 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 		return 0;
 	}
 
-	cpvt = pvt->last_dialed_cpvt;
+	struct cpvt * cpvt = pvt->last_dialed_cpvt;
 	pvt->last_dialed_cpvt = NULL;
 	if(!cpvt)
 	{
