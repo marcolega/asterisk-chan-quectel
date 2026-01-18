@@ -1390,6 +1390,7 @@ EXPORT_DEF void change_channel_state(struct cpvt * cpvt, unsigned newstate, int 
 					break;
 
 				case CALL_STATE_RELEASED:
+					ast_log (LOG_ERROR, "[%s] Call state released...\n", PVT_ID(pvt));
 					disactivate_call(cpvt);
 					/* from +CEND, restart or disconnect */
 
