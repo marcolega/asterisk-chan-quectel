@@ -96,8 +96,6 @@ static int at_response_rcend (struct pvt * pvt, const char* str)
 	int end_status = 0;
 	int cc_cause   = 0;
 	struct cpvt * cpvt;
-
-    ast_log (LOG_ERROR, "[%s] at_response_rcend\n", PVT_ID(pvt));
 	
 	if (pvt->call_estb) return 0;
 
@@ -130,8 +128,6 @@ static int at_response_cend (struct pvt * pvt, const char* str)
         
         pvt->call_estb = 0;
 	request_clcc(pvt);
-
-	ast_log (LOG_ERROR, "[%s] at_response_cend\n", PVT_ID(pvt));
 
 	/*
 	 * parse CEND info in the following format:
@@ -765,12 +761,9 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 {
 	int call_index;
 	int call_type;
-	
 
-	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
-
-        if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
-        {
+    if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
+    {
 	struct cpvt * cpvt;
 
 	request_clcc(pvt);
@@ -778,7 +771,6 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	pvt->ring = 0;
 	pvt->dialing = 0;
 	pvt->cwaiting = 0;
-	
 	
 	ast_debug (1, "[%s] CONN Received call_index %d call_type %d\n", PVT_ID(pvt), call_index, call_type);
 
@@ -816,9 +808,6 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 
 	request_clcc(pvt);
 
-	ast_debug (1,	"[%s] CEND: call_index %d duration %d end_status %d cc_cause %d Line disconnected\n"
-				, PVT_ID(pvt), call_index, duration, end_status, cc_cause);
-
 	cpvt = pvt_find_cpvt(pvt, call_index);
 	if (cpvt)
 	{
@@ -834,6 +823,10 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	{
 //		ast_log (LOG_ERROR, "[%s] CEND event for unknown call idx '%d'\n", PVT_ID(pvt), call_index);
 	}
+
+	ast_debug (1,	"[%s] CEND: call_index %d duration %d end_status %d cc_cause %d Line disconnected\n"
+				, PVT_ID(pvt), call_index, duration, end_status, cc_cause);
+
 
 	return 0;
         }
@@ -1146,8 +1139,6 @@ static int at_response_clcc (struct pvt* pvt, char* str)
 	unsigned held = 0;
 	char * number;
 	char *p;
-
-	ast_log (LOG_ERROR, "[%s] at_response_clcc\n", PVT_ID(pvt));
 
 	if (pvt->initialized)
 	{
