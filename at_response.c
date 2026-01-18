@@ -97,7 +97,9 @@ static int at_response_rcend (struct pvt * pvt, const char* str)
 	int cc_cause   = 0;
 	struct cpvt * cpvt;
 
-        if (pvt->call_estb) return 0;
+    ast_log (LOG_ERROR, "[%s] at_response_rcend\n", PVT_ID(pvt));
+	
+	if (pvt->call_estb) return 0;
 
 	cpvt = active_cpvt(pvt);
 
@@ -128,6 +130,8 @@ static int at_response_cend (struct pvt * pvt, const char* str)
         
         pvt->call_estb = 0;
 	request_clcc(pvt);
+
+	ast_log (LOG_ERROR, "[%s] at_response_cend\n", PVT_ID(pvt));
 
 	/*
 	 * parse CEND info in the following format:
@@ -771,7 +775,8 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	pvt->ring = 0;
 	pvt->dialing = 0;
 	pvt->cwaiting = 0;
-
+	
+	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
 	ast_debug (1, "[%s] CONN Received call_index %d call_type %d\n", PVT_ID(pvt), call_index, call_type);
 
 	if (call_type == CLCC_CALL_TYPE_VOICE)
@@ -1138,6 +1143,8 @@ static int at_response_clcc (struct pvt* pvt, char* str)
 	unsigned held = 0;
 	char * number;
 	char *p;
+
+	ast_log (LOG_ERROR, "[%s] at_response_clcc\n", PVT_ID(pvt));
 
 	if (pvt->initialized)
 	{
@@ -2171,10 +2178,10 @@ int at_response (struct pvt* pvt, const struct iovec iov[2], int iovcnt, at_res_
 				ast_log (LOG_ERROR, "[%s] Receive NO DIALTONE\n", PVT_ID(pvt));
 				at_response_busy(pvt, AST_CONTROL_CONGESTION);
 				break;
+
 			case RES_NO_CARRIER:
 				ast_log (LOG_WARNING, "[%s] Receive NO CARRIER\n", PVT_ID(pvt));
-
-                               return 0;
+				return 0;
 
 			case RES_CPIN:
 				/* fatal */
