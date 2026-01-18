@@ -813,8 +813,6 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int end_status = 0;
 	int cc_cause   = 0;
 	struct cpvt * cpvt;
-	
-	if (cpvt->state == CALL_STATE_DIALING) cc_cause = 17;
 
 	request_clcc(pvt);
 
@@ -824,8 +822,9 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	cpvt = pvt_find_cpvt(pvt, call_index);
 	if (cpvt)
 	{
-                if (pvt->call_estb) duration = uptime() - pvt->t0;
-                pvt->call_estb = 0;
+		if (cpvt->state == CALL_STATE_DIALING) cc_cause = 17;
+        if (pvt->call_estb) duration = uptime() - pvt->t0;
+        pvt->call_estb = 0;
 		CPVT_RESET_FLAGS(cpvt, CALL_FLAG_NEED_HANGUP);
 		PVT_STAT(pvt, calls_duration[cpvt->dir]) += duration;
 		change_channel_state(cpvt, CALL_STATE_RELEASED, cc_cause);
