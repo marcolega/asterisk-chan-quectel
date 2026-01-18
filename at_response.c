@@ -766,6 +766,8 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int call_index;
 	int call_type;
 
+	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
+	
         if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
         {
 	struct cpvt * cpvt;
@@ -776,7 +778,7 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	pvt->dialing = 0;
 	pvt->cwaiting = 0;
 	
-	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
+	
 	ast_debug (1, "[%s] CONN Received call_index %d call_type %d\n", PVT_ID(pvt), call_index, call_type);
 
 	if (call_type == CLCC_CALL_TYPE_VOICE)
