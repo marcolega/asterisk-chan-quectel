@@ -2164,6 +2164,7 @@ int at_response (struct pvt* pvt, const struct iovec iov[2], int iovcnt, at_res_
 
 			case RES_BUSY:
 				ast_log (LOG_ERROR, "[%s] Receive BUSY\n", PVT_ID(pvt));
+				at_response_busy(pvt, AST_CONTROL_BUSY);
 				return 0;
 
 			case RES_NO_DIALTONE:
