@@ -772,7 +772,7 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 
         if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
         {
-	struct cpvt * cpvt;
+	//struct cpvt * cpvt;
 
 	request_clcc(pvt);
 
