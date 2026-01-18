@@ -813,10 +813,8 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int end_status = 0;
 	int cc_cause   = 0;
 	struct cpvt * cpvt;
-	call_state_t actualstate = cpvt->state;
 	
-	if (actualstate == CALL_STATE_DIALING) 
-		cc_cause = 17;
+	if (cpvt->state == CALL_STATE_DIALING) cc_cause = 17;
 
 	request_clcc(pvt);
 
