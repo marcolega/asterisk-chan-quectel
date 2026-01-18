@@ -818,7 +818,6 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 
 	request_clcc(pvt);
 
-
 	ast_debug (1,	"[%s] CEND: call_index %d duration %d end_status %d cc_cause %d Line disconnected\n"
 				, PVT_ID(pvt), call_index, duration, end_status, cc_cause);
 
