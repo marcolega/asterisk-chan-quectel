@@ -767,7 +767,7 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int call_type;
 
 	ast_log (LOG_ERROR, "[%s] at_response_orig\n", PVT_ID(pvt));
-	
+
         if (sscanf (str, "^DSCI:%d,%*d,3,%d,%*s", &call_index, &call_type) == 2 && call_type == 0)
         {
 	struct cpvt * cpvt;
@@ -812,6 +812,8 @@ static int at_response_orig (struct pvt* pvt, const char* str)
 	int end_status = 0;
 	int cc_cause   = 0;
 	struct cpvt * cpvt;
+	call_state_t oldstate = cpvt->state;
+	if (oldstate == CALL_STATE_DIALING) cc_cause = AST_CAUSE_BUSY;
 
 	request_clcc(pvt);
 
@@ -2183,6 +2185,7 @@ int at_response (struct pvt* pvt, const struct iovec iov[2], int iovcnt, at_res_
 
 			case RES_NO_CARRIER:
 				ast_log (LOG_WARNING, "[%s] Receive NO CARRIER\n", PVT_ID(pvt));
+				at_response_busy(pvt, AST_CONTROL_CONGESTION);
 				return 0;
 
 			case RES_CPIN:
